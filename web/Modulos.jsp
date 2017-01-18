@@ -54,7 +54,7 @@
                 <!--     <small class="text-primary slideInRight fast animated"><strong>¡Bienvenido!</strong></small>-->
             </h1>
         </div>
-        <div class="col col-md-12 col-md-offset-3">	
+        <div class="col col-md-12 /*col-md-offset-12*/" style="margin-left: 100px;">	
             <br>
             <br>
             <nav id="menu" class="nav"  >	
