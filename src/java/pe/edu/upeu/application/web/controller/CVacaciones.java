@@ -48,6 +48,11 @@ public class CVacaciones extends HttpServlet {
 
             response.sendRedirect("Vista/Vacaciones/Lista_Empleados.jsp");
         }
+        if (opc.equals("asign")) {
+
+
+            response.sendRedirect("Vista/Vacaciones/prog_vacaciones.jsp");
+        }
         
         try {
 

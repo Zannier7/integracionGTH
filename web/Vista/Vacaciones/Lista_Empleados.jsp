@@ -171,7 +171,7 @@
                                                                                                                                                     <img src="../Usuario/Fotos/<%=e.getAr_foto()%>"  width="30"  height="30">
                                                                                                                                                         <% }%>
 
-                                                                                                                                                        <a href="../../trabajador?idtr=<%=e.getId_trabajador()%>&opc=list"><%=e.getNo_trabajador().toUpperCase() + " " + e.getAp_paterno().toUpperCase() + " " + e.getAp_materno().toUpperCase()%></a></td>
+                                                                                                                                                        <a href="../../vacaciones?idtr=<%=e.getId_trabajador()%>&opc=asign"><%=e.getNo_trabajador().toUpperCase() + " " + e.getAp_paterno().toUpperCase() + " " + e.getAp_materno().toUpperCase()%></a></td>
                                                                                                                                                         <td><%=e.getNo_area()%></td>
                                                                                                                                                         <td><%=e.getNo_seccion()%></td>
                                                                                                                                                         <td><%=e.getNo_puesto()%></td>
