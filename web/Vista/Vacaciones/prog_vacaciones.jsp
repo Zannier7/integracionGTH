@@ -53,7 +53,6 @@
         <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <link href="../../daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
         <!-- Startup image for web apps -->
 
         <link rel="apple-touch-startup-image" href="../../img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
@@ -151,17 +150,17 @@
                                     </div>
                                     <div class="row">
                                         <div class="col col-12 text-center">
-                                            <h3><label>Seleccionar rango de días a solicitar:</label></h3>
+                                            <h3><label>Seleccionar rango de fechas a solicitar:</label></h3>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col col-2"></div>
-                                        <section class="col col-6 ">
-                                            <div class="row">
-                                                <div class="col col-6 ">
+                                        <section class="row col col-6 dateranges ">
+                                            <div class="row col col-12 rangegroup1">
+                                                <div class="col col-6">
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <input class="form-control" id="from" type="text" placeholder="Desde">
+                                                            <input class="form-control" id="from1" type="text" placeholder="Desde">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         </div>
                                                     </div>
@@ -169,21 +168,23 @@
                                                 <div class="col col-6 ">
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <input class="form-control" id="to" type="text" placeholder="Hasta">
+                                                            <input class="form-control" id="to1" type="text" placeholder="Hasta">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </section>
                                         <div class="col col-4">
-                                            <a href="javascript:void(0);" class="btn btn-primary btn-circle btn-lg"><i class="glyphicon glyphicon-plus"></i></a>
+                                            <a id="addrange" class="btn btn-primary btn-circle btn-lg"><i class="glyphicon glyphicon-plus"></i></a>
+                                            <a id="delrange" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></a>
                                         </div>
                                     </div>
                                 </fieldset>
                                 <footer>
-                                    <input type="hidden" name="opc"   value="REGISTRAR CONTRATO">
+                                    <input type="hidden" name="opc" value="VacationAsign">
+                                    <input type="hidden" name="iddgp" value="">
+                                    <input type="hidden" name="idtra" value="">
                                     <button id="submitbtn" type="button" class="btn btn-labeled btn-success">
                                         Registrar
                                     </button>
@@ -277,7 +278,6 @@
         <!-- PAGE RELATED PLUGIN(S) -->
         <script src="../../js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
         <script src="../../js/plugin/fuelux/wizard/wizard.min.js"></script>
-        <script src="../../daterangepicker/daterangepicker.js" type="text/javascript"></script>
 
 
 
@@ -289,7 +289,7 @@
             $(document).ready(function () {
 
                 pageSetUp();
-
+                var nr = 1;
 
                 // Date Range Picker
                 $("#from").datepicker({
@@ -408,8 +408,64 @@
                     });
 
                 });
+                $("#submitbtn").click(function () {
 
+                });
 
+                $("#addrange").click(function () {
+                    var add = "";
+                    if (nr < 4) {
+                        nr = nr + 1;
+                        add += "<div class='row col col-12 rangegroup" + nr + "'>";
+                        add += "<div class='col col-6'>";
+                        add += "<div class='form-group'>";
+                        add += "<div class='input-group'>";
+                        add += "<input class='form-control' id='from" + nr + "' type='text' placeholder='Desde'>";
+                        add += "<span class='input-group-addon'><i class='fa fa-calendar'></i></span>";
+                        add += "</div>";
+                        add += "</div>";
+                        add += "</div>";
+                        add += "<div class='col col-6 '>";
+                        add += "<div class='form-group'>";
+                        add += "<div class='input-group'>";
+                        add += "<input class='form-control' id='to" + nr + "' type='text' placeholder='Hasta'>";
+                        add += "<span class='input-group-addon'><i class='fa fa-calendar'></i></span>";
+                        add += "</div>";
+                        add += "</div>";
+                        add += "</div>";
+                        add += "</div>";
+                        $(".dateranges").append(add);
+                        $("#from" + nr).datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3,
+                            prevText: '<i class="fa fa-chevron-left"></i>',
+                            nextText: '<i class="fa fa-chevron-right"></i>',
+                            onClose: function (selectedDate) {
+                                $("#to").datepicker("option", "minDate", selectedDate);
+                            }
+
+                        });
+                        $("#to" + nr).datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3,
+                            prevText: '<i class="fa fa-chevron-left"></i>',
+                            nextText: '<i class="fa fa-chevron-right"></i>',
+                            onClose: function (selectedDate) {
+                                $("#from").datepicker("option", "maxDate", selectedDate);
+                            }
+                        });
+                    } else {
+
+                    }
+                });
+                $("#delrange").click(function () {
+                    if (nr > 1) {
+                        $(".rangegroup" + nr).remove();
+                        nr = nr - 1;
+                    }
+                });
             });
 
         </script>
