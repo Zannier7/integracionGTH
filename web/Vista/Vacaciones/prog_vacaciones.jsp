@@ -156,11 +156,11 @@
                                     <div class="row">
                                         <div class="col col-2"></div>
                                         <section class="row col col-6 dateranges ">
-                                            <div class="row col col-12 rangegroup1">
+                                            <div style="padding-bottom: 5px;" class="row col col-12 rangegroup1">
                                                 <div class="col col-6">
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <input class="form-control" id="from1" type="text" placeholder="Desde">
+                                                            <input onchange="calnd()" class="form-control" id="from1" type="text" placeholder="Desde">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         </div>
                                                     </div>
@@ -168,7 +168,7 @@
                                                 <div class="col col-6 ">
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <input class="form-control" id="to1" type="text" placeholder="Hasta">
+                                                            <input onchange="calnd()" class="form-control" id="to1" type="text" placeholder="Hasta">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         </div>
                                                     </div>
@@ -178,6 +178,12 @@
                                         <div class="col col-4">
                                             <a id="addrange" class="btn btn-primary btn-circle btn-lg"><i class="glyphicon glyphicon-plus"></i></a>
                                             <a id="delrange" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-2"></div>
+                                        <div class="col col-10">
+                                            <h3><label>Total de días:</label><label style="color: #005cac;" id="ntd">0</label></h3>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -204,16 +210,16 @@
         <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>
-            if (!window.jQuery) {
-                document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
-            }
+                                                                if (!window.jQuery) {
+                                                                    document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
+                                                                }
         </script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script>
-            if (!window.jQuery.ui) {
-                document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-            }
+                                                                if (!window.jQuery.ui) {
+                                                                    document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+                                                                }
         </script>
 
         <!-- IMPORTANT: APP CONFIG -->
@@ -284,189 +290,209 @@
 
         <script type="text/javascript">
 
-            // DO NOT REMOVE : GLOBAL FUNCTIONS!
+                                                                // DO NOT REMOVE : GLOBAL FUNCTIONS!
 
-            $(document).ready(function () {
+                                                                var nr = 1;
+                                                                $(document).ready(function () {
 
-                pageSetUp();
-                var nr = 1;
+                                                                    pageSetUp();
 
-                // Date Range Picker
-                $("#from").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 3,
-                    prevText: '<i class="fa fa-chevron-left"></i>',
-                    nextText: '<i class="fa fa-chevron-right"></i>',
-                    onClose: function (selectedDate) {
-                        $("#to").datepicker("option", "minDate", selectedDate);
-                    }
+                                                                    // Date Range Picker
+                                                                    $("#from1").datepicker({
+                                                                        defaultDate: "+1w",
+                                                                        changeMonth: true,
+                                                                        numberOfMonths: 2,
+                                                                        prevText: '<i class="fa fa-chevron-left"></i>',
+                                                                        nextText: '<i class="fa fa-chevron-right"></i>',
+                                                                        onClose: function (selectedDate) {
+                                                                            $("#to1").datepicker("option", "minDate", selectedDate);
+                                                                        }
 
-                });
-                $("#to").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 3,
-                    prevText: '<i class="fa fa-chevron-left"></i>',
-                    nextText: '<i class="fa fa-chevron-right"></i>',
-                    onClose: function (selectedDate) {
-                        $("#from").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
-
-
+                                                                    });
+                                                                    $("#to1").datepicker({
+                                                                        defaultDate: "+1w",
+                                                                        changeMonth: true,
+                                                                        numberOfMonths: 2,
+                                                                        prevText: '<i class="fa fa-chevron-left"></i>',
+                                                                        nextText: '<i class="fa fa-chevron-right"></i>',
+                                                                        onClose: function (selectedDate) {
+                                                                            $("#from1").datepicker("option", "maxDate", selectedDate);
+                                                                        }
+                                                                    });
 
 
 
-                //Bootstrap Wizard Validations
-
-                var $validator = $("#wizard-1").validate({
-                    rules: {
-                        email: {
-                            required: true,
-                            email: "Your email address must be in the format of name@domain.com"
-                        },
-                        fname: {
-                            required: true
-                        },
-                        lname: {
-                            required: true
-                        },
-                        country: {
-                            required: true
-                        },
-                        city: {
-                            required: true
-                        },
-                        postal: {
-                            required: true,
-                            minlength: 4
-                        },
-                        wphone: {
-                            required: true,
-                            minlength: 10
-                        },
-                        hphone: {
-                            required: true,
-                            minlength: 10
-                        }
-                    },
-                    messages: {
-                        fname: "Please specify your First name",
-                        lname: "Please specify your Last name",
-                        email: {
-                            required: "We need your email address to contact you",
-                            email: "Your email address must be in the format of name@domain.com"
-                        }
-                    },
-                    highlight: function (element) {
-                        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                    },
-                    unhighlight: function (element) {
-                        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                    },
-                    errorElement: 'span',
-                    errorClass: 'help-block',
-                    errorPlacement: function (error, element) {
-                        if (element.parent('.input-group').length) {
-                            error.insertAfter(element.parent());
-                        } else {
-                            error.insertAfter(element);
-                        }
-                    }
-                });
-
-                $('#bootstrap-wizard-1').bootstrapWizard({
-                    'tabClass': 'form-wizard',
-                    'onNext': function (tab, navigation, index) {
-                        var $valid = $("#wizard-1").valid();
-                        if (!$valid) {
-                            $validator.focusInvalid();
-                            return false;
-                        } else {
-                            $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass(
-                                    'complete');
-                            $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step')
-                                    .html('<i class="fa fa-check"></i>');
-                        }
-                    }
-                });
 
 
-                // fuelux wizard
-                var wizard = $('.wizard').wizard();
+                                                                    //Bootstrap Wizard Validations
 
-                wizard.on('finished', function (e, data) {
-                    //$("#fuelux-wizard").submit();
-                    //console.log("submitted!");
-                    $.smallBox({
-                        title: "Congratulations! Your form was submitted",
-                        content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
-                        color: "#5F895F",
-                        iconSmall: "fa fa-check bounce animated",
-                        timeout: 4000
-                    });
+                                                                    var $validator = $("#wizard-1").validate({
+                                                                        rules: {
+                                                                            email: {
+                                                                                required: true,
+                                                                                email: "Your email address must be in the format of name@domain.com"
+                                                                            },
+                                                                            fname: {
+                                                                                required: true
+                                                                            },
+                                                                            lname: {
+                                                                                required: true
+                                                                            },
+                                                                            country: {
+                                                                                required: true
+                                                                            },
+                                                                            city: {
+                                                                                required: true
+                                                                            },
+                                                                            postal: {
+                                                                                required: true,
+                                                                                minlength: 4
+                                                                            },
+                                                                            wphone: {
+                                                                                required: true,
+                                                                                minlength: 10
+                                                                            },
+                                                                            hphone: {
+                                                                                required: true,
+                                                                                minlength: 10
+                                                                            }
+                                                                        },
+                                                                        messages: {
+                                                                            fname: "Please specify your First name",
+                                                                            lname: "Please specify your Last name",
+                                                                            email: {
+                                                                                required: "We need your email address to contact you",
+                                                                                email: "Your email address must be in the format of name@domain.com"
+                                                                            }
+                                                                        },
+                                                                        highlight: function (element) {
+                                                                            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                                                                        },
+                                                                        unhighlight: function (element) {
+                                                                            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                                                                        },
+                                                                        errorElement: 'span',
+                                                                        errorClass: 'help-block',
+                                                                        errorPlacement: function (error, element) {
+                                                                            if (element.parent('.input-group').length) {
+                                                                                error.insertAfter(element.parent());
+                                                                            } else {
+                                                                                error.insertAfter(element);
+                                                                            }
+                                                                        }
+                                                                    });
 
-                });
-                $("#submitbtn").click(function () {
+                                                                    $('#bootstrap-wizard-1').bootstrapWizard({
+                                                                        'tabClass': 'form-wizard',
+                                                                        'onNext': function (tab, navigation, index) {
+                                                                            var $valid = $("#wizard-1").valid();
+                                                                            if (!$valid) {
+                                                                                $validator.focusInvalid();
+                                                                                return false;
+                                                                            } else {
+                                                                                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass(
+                                                                                        'complete');
+                                                                                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step')
+                                                                                        .html('<i class="fa fa-check"></i>');
+                                                                            }
+                                                                        }
+                                                                    });
 
-                });
 
-                $("#addrange").click(function () {
-                    var add = "";
-                    if (nr < 4) {
-                        nr = nr + 1;
-                        add += "<div class='row col col-12 rangegroup" + nr + "'>";
-                        add += "<div class='col col-6'>";
-                        add += "<div class='form-group'>";
-                        add += "<div class='input-group'>";
-                        add += "<input class='form-control' id='from" + nr + "' type='text' placeholder='Desde'>";
-                        add += "<span class='input-group-addon'><i class='fa fa-calendar'></i></span>";
-                        add += "</div>";
-                        add += "</div>";
-                        add += "</div>";
-                        add += "<div class='col col-6 '>";
-                        add += "<div class='form-group'>";
-                        add += "<div class='input-group'>";
-                        add += "<input class='form-control' id='to" + nr + "' type='text' placeholder='Hasta'>";
-                        add += "<span class='input-group-addon'><i class='fa fa-calendar'></i></span>";
-                        add += "</div>";
-                        add += "</div>";
-                        add += "</div>";
-                        add += "</div>";
-                        $(".dateranges").append(add);
-                        $("#from" + nr).datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3,
-                            prevText: '<i class="fa fa-chevron-left"></i>',
-                            nextText: '<i class="fa fa-chevron-right"></i>',
-                            onClose: function (selectedDate) {
-                                $("#to").datepicker("option", "minDate", selectedDate);
-                            }
+                                                                    // fuelux wizard
+                                                                    var wizard = $('.wizard').wizard();
 
-                        });
-                        $("#to" + nr).datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            numberOfMonths: 3,
-                            prevText: '<i class="fa fa-chevron-left"></i>',
-                            nextText: '<i class="fa fa-chevron-right"></i>',
-                            onClose: function (selectedDate) {
-                                $("#from").datepicker("option", "maxDate", selectedDate);
-                            }
-                        });
-                    } else {
+                                                                    wizard.on('finished', function (e, data) {
+                                                                        //$("#fuelux-wizard").submit();
+                                                                        //console.log("submitted!");
+                                                                        $.smallBox({
+                                                                            title: "Congratulations! Your form was submitted",
+                                                                            content: "<i class='fa fa-clock-o'></i> <i>1 seconds ago...</i>",
+                                                                            color: "#5F895F",
+                                                                            iconSmall: "fa fa-check bounce animated",
+                                                                            timeout: 4000
+                                                                        });
 
-                    }
-                });
-                $("#delrange").click(function () {
-                    if (nr > 1) {
-                        $(".rangegroup" + nr).remove();
-                        nr = nr - 1;
-                    }
-                });
-            });
+                                                                    });
+                                                                    $("#submitbtn").click(function () {
+
+                                                                    });
+
+                                                                    $("#addrange").click(function () {
+                                                                        var add = "";
+                                                                        if (nr < 4) {
+                                                                            nr = nr + 1;
+                                                                            add += "<div style='padding-bottom: 5px;' class='row col col-12 rangegroup" + nr + "'>";
+                                                                            add += "<div class='col col-6'>";
+                                                                            add += "<div class='form-group'>";
+                                                                            add += "<div class='input-group'>";
+                                                                            add += "<input onchange='calnd()' class='form-control' id='from" + nr + "' type='text' placeholder='Desde'>";
+                                                                            add += "<span class='input-group-addon'><i class='fa fa-calendar'></i></span>";
+                                                                            add += "</div>";
+                                                                            add += "</div>";
+                                                                            add += "</div>";
+                                                                            add += "<div class='col col-6 '>";
+                                                                            add += "<div class='form-group'>";
+                                                                            add += "<div class='input-group'>";
+                                                                            add += "<input onchange='calnd()' class='form-control' id='to" + nr + "' type='text' placeholder='Hasta'>";
+                                                                            add += "<span class='input-group-addon'><i class='fa fa-calendar'></i></span>";
+                                                                            add += "</div>";
+                                                                            add += "</div>";
+                                                                            add += "</div>";
+                                                                            add += "</div>";
+                                                                            $(".dateranges").append(add);
+                                                                            $("#from" + nr).datepicker({
+                                                                                defaultDate: "+1w",
+                                                                                changeMonth: true,
+                                                                                numberOfMonths: 2,
+                                                                                prevText: '<i class="fa fa-chevron-left"></i>',
+                                                                                nextText: '<i class="fa fa-chevron-right"></i>',
+                                                                                onClose: function (selectedDate) {
+                                                                                    $("#to" + nr).datepicker("option", "minDate", selectedDate);
+                                                                                }
+
+                                                                            });
+                                                                            $("#to" + nr).datepicker({
+                                                                                defaultDate: "+1w",
+                                                                                changeMonth: true,
+                                                                                numberOfMonths: 2,
+                                                                                prevText: '<i class="fa fa-chevron-left"></i>',
+                                                                                nextText: '<i class="fa fa-chevron-right"></i>',
+                                                                                onClose: function (selectedDate) {
+                                                                                    $("#from" + nr).datepicker("option", "maxDate", selectedDate);
+                                                                                }
+                                                                            });
+                                                                        } else {
+
+                                                                        }
+                                                                    });
+                                                                    $("#delrange").click(function () {
+                                                                        if (nr > 1) {
+                                                                            $(".rangegroup" + nr).remove();
+                                                                            nr = nr - 1;
+                                                                        }
+                                                                    });
+                                                                });
+                                                                function calnd() {
+                                                                    var ntd = 0, datef = new Date(), datet = new Date();
+                                                                    for (var i = 1; i <= nr; i++) {
+                                                                        if ($("#from" + i).val() != "" && $("#to" + i).val() != "") {
+                                                                            datef = new Date($("#from" + i).val());
+                                                                            datet = new Date($("#to" + i).val());
+                                                                            var dater = datet - datef;
+                                                                            var rd = (((dater / 1000) / 60) / 60) / 24 + 1;
+                                                                            ntd = ntd + rd;
+                                                                        }
+                                                                    }
+                                                                    $("#ntd").text(ntd);
+                                                                    if (ntd > 30) {
+                                                                        $("#ntd").css("color", "#A90329");
+                                                                    }else if(ntd==30){
+                                                                        $("#ntd").css("color", "#1B641B");
+                                                                    }else{
+                                                                        $("#ntd").css("color", "#005cac");
+                                                                    }
+                                                                }
 
         </script>
 
