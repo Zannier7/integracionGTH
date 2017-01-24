@@ -470,6 +470,7 @@
                                                                         if (nr > 1) {
                                                                             $(".rangegroup" + nr).remove();
                                                                             nr = nr - 1;
+                                                                            calnd();
                                                                         }
                                                                     });
                                                                 });
